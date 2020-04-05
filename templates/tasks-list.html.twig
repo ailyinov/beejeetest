@@ -1,4 +1,4 @@
-{% include "header.html.twig" %}
+{% include 'header.html.twig' %}
 {% block content %}
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -7,22 +7,14 @@
         <th scope="col">
             <a href="?{{ paginator.getQuery(null, 'user_email', paginator.toggleOrder()) }}"> User email
                 {% if paginator.getSortField() == 'user_email' %}
-                    {% if paginator.getOrder() == 'asc' %}
-                        <span class="badge badge-light">&downarrow;</span>
-                    {% else %}
-                        <span class="badge badge-light">&uparrow;</span>
-                    {% endif %}
+                    {% include 'sort-order.html.twig' with { 'paginator' : paginator } %}
                 {% endif %}
             </a>
         </th>
         <th scope="col">
             <a href="?{{ paginator.getQuery(null, 'user_name', paginator.toggleOrder()) }}">User name
                 {% if paginator.getSortField() == 'user_name' %}
-                {% if paginator.getOrder() == 'asc' %}
-                    <span class="badge badge-light">&downarrow;</span>
-                {% else %}
-                    <span class="badge badge-light">&uparrow;</span>
-                {% endif %}
+                    {% include 'sort-order.html.twig' with { 'paginator' : paginator } %}
                 {% endif %}
             </a>
         </th>
@@ -30,11 +22,7 @@
         <th scope="col">
             <a href="?{{ paginator.getQuery(null, 'is_completed', paginator.toggleOrder()) }}">Status
                 {% if paginator.getSortField() == 'is_completed' %}
-                {% if paginator.getOrder() == 'asc' %}
-                    <span class="badge badge-light">&downarrow;</span>
-                {% else %}
-                    <span class="badge badge-light">&uparrow;</span>
-                {% endif %}
+                    {% include 'sort-order.html.twig' with { 'paginator' : paginator } %}
                 {% endif %}
             </a>
         </th>
