@@ -19,6 +19,7 @@ class AuthService
         if ($role && $role === User\Roles::ADMIN) {
             $user = new User(User\Roles::ADMIN);
             $user->grantPermission(User\Permissions::EDIT);
+            $user->grantPermission(User\Permissions::LOGOUT);
         } else {
             $user = new User(User\Roles::ANON);
         }
