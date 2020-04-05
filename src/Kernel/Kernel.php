@@ -107,12 +107,12 @@ class Kernel
 
     /**
      * @param Request $request
-     * @param string $handler
+     * @param array $handler
      * @param array $vars
      * @return string
      * @throws ForbiddenException
      */
-    private function handleRoute(Request $request, string $handler, array $vars): string
+    private function handleRoute(Request $request, array $handler, array $vars): string
     {
         $routeHandler = new RouteHandler($this->twig, $handler);
         $request->attributes->add($vars);

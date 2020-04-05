@@ -21,9 +21,9 @@ class RouteHandler
     private $method;
 
     /**
-     * @var string
+     * @var array
      */
-    private $methodPermission;
+    private $routePermissions = [];
 
     /**
      * @var Twig
@@ -33,13 +33,17 @@ class RouteHandler
     /**
      * RouteHandler constructor.
      * @param Twig $twig
-     * @param string $handler
+     * @param array $handler
      */
-    public function __construct(Twig $twig, string $handler)
+    public function __construct(Twig $twig, array $handler)
     {
-        [$class, $method] = explode('::', $handler);
-        $this->method = $this->parseRoutePermissions($method);
+        if (count($handler) < 3) {
+            $handler[] = [];
+        }
+        [$class, $method, $permissions] = $handler;
+        $this->method = $method;
         $this->class =$class;
+        $this->routePermissions = $permissions;
         $this->twig = $twig;
     }
 
@@ -57,28 +61,16 @@ class RouteHandler
         return $response;
     }
 
-    private function parseRoutePermissions(string $method): string
-    {
-        $methodData = explode('|', $method);
-        if (count($methodData) == 2) {
-            [$method, $permissions] = $methodData;
-            [, $permission] = explode(':', $permissions);
-            $this->methodPermission = $permission;
-
-            return $method;
-        }
-
-        return $method;
-    }
-
     /**
      * @param Request $request
      * @throws ForbiddenException
      */
     private function checkPermissions(Request $request): void
     {
-        if ($this->methodPermission && !$request->get('current_user')->hasPermission($this->methodPermission)) {
-            throw new ForbiddenException();
+        foreach ($this->routePermissions as $permission) {
+            if (!$request->get('current_user')->hasPermission($permission)) {
+                throw new ForbiddenException();
+            }
         }
     }
 }
