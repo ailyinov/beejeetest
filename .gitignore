@@ -1,5 +1,5 @@
 /.env
-./env.php
+/env.php
 /vendor
 /var/*
 /.idea
