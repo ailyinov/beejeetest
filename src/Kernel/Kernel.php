@@ -70,7 +70,7 @@ class Kernel
                 $this->initUser($request);
                 [, $handler, $vars] = $routeInfo;
                 try {
-                    $responseData = $this->handleRoute($request, $pathInfo, $handler, $vars);
+                    $responseData = $this->handleRoute($request, $handler, $vars);
                 } catch (ForbiddenException $ex) {
                     return new Response($ex->getMessage(), 403);
                 }
@@ -107,15 +107,14 @@ class Kernel
 
     /**
      * @param Request $request
-     * @param string $currentPath
      * @param string $handler
      * @param array $vars
      * @return string
      * @throws ForbiddenException
      */
-    private function handleRoute(Request $request, string $currentPath, string $handler, array $vars): string
+    private function handleRoute(Request $request, string $handler, array $vars): string
     {
-        $routeHandler = new RouteHandler($this->twig, $handler, $currentPath);
+        $routeHandler = new RouteHandler($this->twig, $handler);
         $request->attributes->add($vars);
 
         return $routeHandler->handle($request);

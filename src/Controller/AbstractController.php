@@ -16,11 +16,6 @@ abstract class AbstractController
     private $twig;
 
     /**
-     * @var string
-     */
-    private $currentPath;
-
-    /**
      * @var Request
      */
     protected $request;
@@ -29,12 +24,10 @@ abstract class AbstractController
      * AbstractController constructor.
      * @param Twig $twig
      * @param Request $request
-     * @param string $currentPath
      */
-    public function __construct(Twig $twig, Request $request, string $currentPath)
+    public function __construct(Twig $twig, Request $request)
     {
         $this->twig = $twig;
-        $this->currentPath = $currentPath;
         $this->request = $request;
     }
 
@@ -47,7 +40,7 @@ abstract class AbstractController
 
     protected function getCurrentPath(): string
     {
-        return $this->currentPath;
+        return $this->request->getPathInfo();
     }
 
     protected function redirect(string $path): void

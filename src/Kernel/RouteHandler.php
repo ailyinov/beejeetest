@@ -31,23 +31,16 @@ class RouteHandler
     private $twig;
 
     /**
-     * @var string
-     */
-    private $currentPath;
-
-    /**
      * RouteHandler constructor.
      * @param Twig $twig
      * @param string $handler
-     * @param string $currentPath
      */
-    public function __construct(Twig $twig, string $handler, string $currentPath)
+    public function __construct(Twig $twig, string $handler)
     {
         [$class, $method] = explode('::', $handler);
         $this->method = $this->parseRoutePermissions($method);
         $this->class =$class;
         $this->twig = $twig;
-        $this->currentPath = $currentPath;
     }
 
     /**
@@ -58,7 +51,7 @@ class RouteHandler
     public function handle(Request $request): string
     {
         $this->checkPermissions($request);
-        $handlerInstance = new $this->class($this->twig, $request, $this->currentPath);
+        $handlerInstance = new $this->class($this->twig, $request);
         $response = call_user_func([$handlerInstance, $this->method]);
 
         return $response;
